@@ -13,6 +13,7 @@ module.exports = class Annotation extends PlayerUIComponent {
   constructor(data, player) {
     super(player);
     this.id = data.id || this.componentId;
+    this.emoji = data.emoji;
     this.range = data.range;
     this.shape = data.shape;
     this.secondsActive = this.buildSecondsActiveArray();
@@ -48,7 +49,7 @@ module.exports = class Annotation extends PlayerUIComponent {
   }
 
   bindEvents() {
-    this.marker.$el.on('click.vac-marker', e =>
+    this.marker.$el.on('click.vac-marker', (e) =>
       this.plugin.annotationState.openAnnotation(this, true)
     );
   }
@@ -124,14 +125,13 @@ module.exports = class Annotation extends PlayerUIComponent {
   }
 
   // Build a new annotation instance by passing in data for range, shape, comment, & plugin ref
-  static newFromData(range, shape, commentStr, plugin, id = null) {
+  static newFromData(range, emoji, commentStr, plugin, id = null) {
     const comment = Comment.dataObj(commentStr, plugin);
     if (range) range = Utils.parseIntObj(range);
-    if (shape) shape = Utils.parseIntObj(shape);
     const data = {
       id,
       range,
-      shape,
+      emoji,
       comments: [comment]
     };
     return new Annotation(data, plugin.player);

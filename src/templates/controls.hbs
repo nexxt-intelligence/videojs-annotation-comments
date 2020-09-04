@@ -13,14 +13,10 @@
 {{/unless}}
 
 {{#if adding}}
-<div class="vac-video-cover vac-control">
-    <div class="vac-video-cover-canvas">
-        <div class="vac-cursor-tool-tip vac-hidden">Click and drag to select</div>
-    </div>
-</div>
+
 {{#if showControls}}
 <div class="vac-add-controls vac-control">
-    <i>Select shape + range</i>
+    <i>Select the frame you want to comment on</i>
     {{#if internalCommenting}}
     <button class="vac-button">CONTINUE</button>
     <a>cancel</a>
@@ -36,7 +32,23 @@
 <div class="vac-video-write-new-wrap vac-control">
     <div class="vac-video-write-new vac-is-annotation">
         <div>
-            <h5><b>New Annotation</b> @ {{rangeStr}}</h5>
+            <span class="vac-emoji-instructions">How did you feel at this part of the video</span>
+            <div class="vac-emoji-container">
+                <div class="vac-emoji-block" name="like">
+                    <img class="vac-emoji-img" src='https://static.nexxt.in/img/emojis/video-like.png' />
+                    <div class="vac-emoji-label">Like</div>
+                </div>
+                <div class="vac-emoji-block" name="dislike">
+                    <img class="vac-emoji-img" src='https://static.nexxt.in/img/emojis/video-dislike.png' />
+                    <div class="vac-emoji-label">Dislike</div>
+                </div>
+                   <div class="vac-emoji-block" name="confused">
+                    <img class="vac-emoji-img" src='https://static.nexxt.in/img/emojis/video-confused.png' />
+                    <div class="vac-emoji-label">Confused</div>
+                </div>
+
+            </div>
+            <div class="vac-comment-error"></div>
             <div class="vac-comment-showbox">
                 <textarea placeholder="Enter comment..."></textarea>
                 <div>
