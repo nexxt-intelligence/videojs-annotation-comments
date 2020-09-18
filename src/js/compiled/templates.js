@@ -75,24 +75,12 @@ exports["templates"]["controls"] = Handlebars.template({"1":function(container,d
         return undefined
     };
 
-  return "<div class=\"vac-controls vac-control\">\n    <button class=\"vac-button\">+ NEW</button>\n"
+  return "<div class=\"vac-controls vac-control\">\n    <button class=\"vac-button\">ADD COMMENT</button>\n"
     + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"showNav") : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":10,"column":11}}})) != null ? stack1 : "")
     + "</div>\n";
 },"3":function(container,depth0,helpers,partials,data) {
     return "    <div class=\"vac-annotation-nav\">\n        <div class=\"vac-a-prev\">Prev</div>\n        <div class=\"vac-a-next\">Next</div>\n    </div>\n";
 },"5":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), lookupProperty = container.lookupProperty || function(parent, propertyName) {
-        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
-          return parent[propertyName];
-        }
-        return undefined
-    };
-
-  return "\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"showControls") : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":17,"column":0},"end":{"line":29,"column":7}}})) != null ? stack1 : "")
-    + "\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"writingComment") : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":31,"column":0},"end":{"line":62,"column":7}}})) != null ? stack1 : "");
-},"6":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
@@ -100,13 +88,10 @@ exports["templates"]["controls"] = Handlebars.template({"1":function(container,d
         return undefined
     };
 
-  return "<div class=\"vac-add-controls vac-control\">\n    <i>Select the frame you want to comment on</i>\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"internalCommenting") : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":20,"column":4},"end":{"line":23,"column":11}}})) != null ? stack1 : "")
-    + "    <div class=\"vac-video-move\">\n        <div class=\"vac-a-prev\">-1 sec</div>\n        <div class=\"vac-a-next\">+1 sec</div>\n    </div>\n</div>\n";
-},"7":function(container,depth0,helpers,partials,data) {
-    return "    <button class=\"vac-button\">CONTINUE</button>\n    <a>cancel</a>\n";
-},"9":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"vac-video-write-new-wrap vac-control\">\n    <div class=\"vac-video-write-new vac-is-annotation\">\n        <div>\n            <span class=\"vac-emoji-instructions\">How did you feel at this part of the video</span>\n            <div class=\"vac-emoji-container\">\n                <div class=\"vac-emoji-block\" name=\"like\">\n                    <img class=\"vac-emoji-img\" src='https://static.nexxt.in/img/emojis/video-like.png' />\n                    <div class=\"vac-emoji-label\">Like</div>\n                </div>\n                <div class=\"vac-emoji-block\" name=\"dislike\">\n                    <img class=\"vac-emoji-img\" src='https://static.nexxt.in/img/emojis/video-dislike.png' />\n                    <div class=\"vac-emoji-label\">Dislike</div>\n                </div>\n                   <div class=\"vac-emoji-block\" name=\"confused\">\n                    <img class=\"vac-emoji-img\" src='https://static.nexxt.in/img/emojis/video-confused.png' />\n                    <div class=\"vac-emoji-label\">Confused</div>\n                </div>\n\n            </div>\n            <div class=\"vac-comment-error\"></div>\n            <div class=\"vac-comment-showbox\">\n                <textarea placeholder=\"Enter comment...\"></textarea>\n                <div>\n                    <button class=\"vac-button\">SAVE</button>\n                    <a>Cancel</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+  return "\n"
+    + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"writingComment") : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":17,"column":0},"end":{"line":52,"column":7}}})) != null ? stack1 : "");
+},"6":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"vac-video-write-new-wrap vac-control\">\n    <div class=\"vac-video-write-new vac-is-annotation\">\n        <div>\n            <span class=\"vac-emoji-instructions\">Choose an emoji, and explain why you feel that way 👇</span>\n            <div class=\"vac-emoji-container\">\n                <div class=\"vac-emoji-block\" name=\"like\">\n                    <img class=\"vac-emoji-img\" src='https://static.nexxt.in/img/emojis/video-like.png' />\n                    <div class=\"vac-emoji-label\">Like</div>\n                </div>\n                <div class=\"vac-emoji-block\" name=\"dislike\">\n                    <img class=\"vac-emoji-img\" src='https://static.nexxt.in/img/emojis/video-dislike.png' />\n                    <div class=\"vac-emoji-label\">Dislike</div>\n                </div>\n                   <div class=\"vac-emoji-block\" name=\"confused\">\n                    <img class=\"vac-emoji-img\" src='https://static.nexxt.in/img/emojis/video-confused.png' />\n                    <div class=\"vac-emoji-label\">Confused</div>\n                </div>\n\n            </div>\n            <div class=\"vac-comment-error\"></div>\n            <div class=\"vac-comment-showbox\">\n                <textarea placeholder=\"Enter comment...\"></textarea>\n                <div>\n                    <button class=\"vac-button\">SAVE</button>\n                    <a>Cancel</a>\n                </div>\n            </div>\n            <div class=\"vac-video-move\">\n                <div class=\"vac-a-prev\">-1 sec</div>\n                <div class=\"vac-a-next\">+1 sec</div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
@@ -117,7 +102,7 @@ exports["templates"]["controls"] = Handlebars.template({"1":function(container,d
 
   return ((stack1 = lookupProperty(helpers,"unless").call(alias1,(depth0 != null ? lookupProperty(depth0,"adding") : depth0),{"name":"unless","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":1,"column":0},"end":{"line":13,"column":11}}})) != null ? stack1 : "")
     + "\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"adding") : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":15,"column":0},"end":{"line":63,"column":7}}})) != null ? stack1 : "");
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"adding") : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":15,"column":0},"end":{"line":53,"column":7}}})) != null ? stack1 : "");
 },"useData":true});
 exports["templates"]["draggable_marker"] = Handlebars.template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {

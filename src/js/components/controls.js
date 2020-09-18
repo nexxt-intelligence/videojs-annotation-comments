@@ -47,8 +47,8 @@ module.exports = class Controls extends PlayerUIComponent {
       .on('click.vac-controls', '.vac-annotation-nav .vac-a-prev', () =>
         this.plugin.annotationState.prevAnnotation()
       ) // Click 'prev' on annotation nav
-      .on('click.vac-controls', '.vac-video-move .vac-a-next', () => this.marker.scrubStart(1)) // Click '+1 sec' on marker nav
-      .on('click.vac-controls', '.vac-video-move .vac-a-prev', () => this.marker.scrubStart(-1)); // Click '-1 sec' on marker nav
+      .on('click.vac-control', '.vac-video-move .vac-a-next', () => this.marker.scrubStart(1)) // Click '+1 sec' on marker nav
+      .on('click.vac-control', '.vac-video-move .vac-a-prev', () => this.marker.scrubStart(-1)); // Click '-1 sec' on marker nav
 
     if (this.internalCommenting) {
       this.$player
@@ -127,9 +127,11 @@ module.exports = class Controls extends PlayerUIComponent {
 
   // User clicked 'add' button in the controls - setup UI and marker
   startAddNew() {
+    // pause and make sure plugin is ready
     if (!this.plugin.active) this.plugin.toggleAnnotationMode();
-
     this.player.pause();
+
+    // switch to adding UI
     this.setAddingUI();
     this.uiState.adding = true;
     this.render();
@@ -145,7 +147,11 @@ module.exports = class Controls extends PlayerUIComponent {
     // show cursor help text if controls are hidden
     if (!this.showControls) this.bindCursorTooltip();
 
+    // fire signal
     this.plugin.fire('enteredAddingAnnotation', { range });
+
+    // immediately show comment writing prompt (skip the need to click)
+    this.writeComment();
   }
 
   // User clicked 'next' action - show UI to write comment
