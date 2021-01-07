@@ -1,6 +1,6 @@
 const expect = chai.expect;
 videoHTML =
-  '<video id="main_player" class="video-js" controls preload="auto" width="720" height="405" data-setup="{}" muted="muted"><source src="./../../contently-platform-overview.mp4" type="video/mp4"></video>';
+  '<video id="main_player" class="video-js" controls preload="auto" width="720" height="405" data-setup="{}" muted="muted"><source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4"></video>';
 addVideo = () => $('#mocha-video-container').html(videoHTML);
 initVJS = () => videojs('main_player');
 firstPlay = () => $('.vjs-big-play-button').click();
