@@ -101,14 +101,11 @@ gulp.task('sass', () => {
     .pipe(gulp.dest('./docs/build/css'));
 });
 
-gulp.task('templates:watch', () => {
-  gulp.watch('./src/templates/**/*.hbs', ['templates']);
-});
-
 gulp.task('sass:watch', () => {
   gulp.watch('./src/css/**/*.scss', ['sass']);
 });
 
+gulp.task('transpile', (cb) => compile(false, cb));
 gulp.task('transpile:watch', () => {
   gulp.watch('./src/js/**/*', ['transpile']);
 });
@@ -140,7 +137,12 @@ gulp.task('templates', () => {
     .pipe(gulp.dest('./src/js/compiled/'));
 });
 
-gulp.task('build', ['templates', 'sass', 'transpile'], (cb) => {
+gulp.task('templates:watch', () => {
+  gulp.watch('./src/templates/**/*.hbs', gulp.series('templates', function() {}));
+});
+
+
+gulp.task('build', gulp.series(['templates', 'sass', 'transpile'], (cb) => {
   pump([
     gulp.src('build/videojs-annotation-comments.js'),
     rename(FILENAME.replace('.js', '.min.js')),
@@ -161,7 +163,7 @@ gulp.task('build', ['templates', 'sass', 'transpile'], (cb) => {
     ],
     cb
   );
-});
+}));
 
 gulp.task('test', () => {
   gulp.src(['test/mocha/components/*.js'], { read: false }).pipe(mocha());
@@ -171,7 +173,6 @@ gulp.task('tdd', function () {
   gulp.watch(['src/**/*.js', 'src/**/.hbs', 'test/mocha/components/*.js'], ['test']);
 });
 
-gulp.task('transpile', (cb) => compile(false, cb));
 gulp.task('bundle_watch', (cb) => compile(true, cb));
-gulp.task('watch', ['dev_webserver', 'templates:watch', 'sass:watch', 'transpile:watch', 'tdd']);
-gulp.task('default', ['watch']);
+gulp.task('watch', gulp.series(['dev_webserver', 'templates:watch', 'sass:watch', 'transpile:watch', 'tdd'], function() {}));
+gulp.task('default', gulp.series('watch', function() {}));
