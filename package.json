@@ -3,9 +3,6 @@
   "version": "2.0.2",
   "description": "A plugin for video.js to add support for timeline moment/range comments and annotations",
   "repository": "git@github.com:nexxt-intelligence/videojs-annotation-comments.git",
-  "publishConfig": {
-      "registry": "https://nexxt-624175887269.d.codeartifact.us-east-2.amazonaws.com/npm/nexxt-npm-registry/"
-  },
   "main": "build/videojs-annotation-comments.cjs.js",
   "style": "build/css/annotations.css",
   "files": [
@@ -16,8 +13,7 @@
     "integration": "echo open in chrome: http://localhost:3004/mocha/features/index.html",
     "watch": "gulp watch",
     "build": "gulp build",
-    "lint": "eslint ./src",
-    "aws:login": "aws codeartifact login --tool npm --repository nexxt-npm-registry --domain nexxt"
+    "lint": "eslint ./src"
   },
   "author": "Evan Carothers (@ecaroth) & Jack Pope (@jackpope) & Nexxt Intelligence Inc. <https://nexxt.in/>",
   "copyright": "Copyright Contently, Inc. <https://www.contently.com/>",
