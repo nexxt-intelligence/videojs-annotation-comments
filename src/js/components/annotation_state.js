@@ -13,6 +13,8 @@ module.exports = class AnnotationState extends PlayerComponent {
     this.initAPI(this, 'AnnotationState');
     this.resetData();
     this.bindEvents();
+    this._enabledReviewMode = this.enableReviewMode.bind(this);
+    this.reviewMode = false;
   }
 
   // sets _enabled and closes or opens annotation as needed
@@ -31,7 +33,7 @@ module.exports = class AnnotationState extends PlayerComponent {
 
   // Sets _annotations w/Annoation objects from input array
   set annotations(annotationsData) {
-    this._annotations = annotationsData.map(a => new Annotation(a, this.player));
+    this._annotations = annotationsData.map((a) => new Annotation(a, this.player));
     this.sortAnnotations();
     this.rebuildAnnotationTimeMap();
   }
@@ -51,7 +53,7 @@ module.exports = class AnnotationState extends PlayerComponent {
 
   // Serialize data
   get data() {
-    return this._annotations.map(a => a.data);
+    return this._annotations.map((a) => a.data);
   }
 
   // Bind events for setting liveAnnotation on video time change
@@ -145,8 +147,8 @@ module.exports = class AnnotationState extends PlayerComponent {
     */
   rebuildAnnotationTimeMap() {
     const timeMap = {};
-    this.annotations.forEach(annotation => {
-      annotation.secondsActive.forEach(second => {
+    this.annotations.forEach((annotation) => {
+      annotation.secondsActive.forEach((second) => {
         const val = timeMap[second] || [];
         val.push(this.annotations.indexOf(annotation));
         timeMap[second] = val;
@@ -186,14 +188,14 @@ module.exports = class AnnotationState extends PlayerComponent {
 
   // Returns annotation object given ID
   findAnnotation(id) {
-    return this.annotations.find(a => a.id == id);
+    return this.annotations.find((a) => a.id == id);
   }
 
   // Returns comment object given ID
   findComment(id) {
-    let comments = this.annotations.map(a => a.commentList.comments);
+    let comments = this.annotations.map((a) => a.commentList.comments);
     comments = [].concat(...comments); // flatten 2d array
-    return comments.find(c => c.id == id);
+    return comments.find((c) => c.id == id);
   }
 
   // Finds the next annotation in collection and opens it
@@ -226,6 +228,10 @@ module.exports = class AnnotationState extends PlayerComponent {
     this.openAnnotation(this.annotations[this.annotations.length - 1], true);
   }
 
+  enableReviewMode() {
+    this.reviewMode = true;
+  }
+
   // Use anywhere the annotation data changes
   // Cleans internal state data, updates player button, triggers configurable callback
   stateChanged() {
@@ -242,11 +248,12 @@ module.exports = class AnnotationState extends PlayerComponent {
     this.enabled = false;
     this.skipNextTimeCheck = false;
     this.lastVideoTime = 0;
+    this.reviewMode = false;
   }
 
   // Remove UI and unbind events for this and child components
   teardown() {
-    this.annotations.forEach(annotation => {
+    this.annotations.forEach((annotation) => {
       annotation.teardown(false);
     });
     this.resetData();

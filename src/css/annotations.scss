@@ -202,6 +202,30 @@ $ui-class-play-disabled: ".vac-disable-play";
   					max-width: none;
   				}
   			}
+			// Wrapper for controls to go to <prev|next> annotation and to scrub +/- 1 sec
+			.vac-annotation-nav, .vac-video-move{
+				margin-top: 8px;
+				width: 100%;
+				display:flex;
+				flex-direction: row;
+				div{
+					flex: 1;
+					background-color: rgba($black,.8);
+					text-align: center;
+					line-height: 22px;
+					color: $secondaryColor;
+					transition: all .2s ease-in-out;
+					cursor: pointer;
+					font-size: 12px;
+					&:hover{
+						background-color: $secondaryColor;
+						color: $black;
+					}
+					&.vac-a-prev{
+						margin-right: 1px;
+					}
+				}
+			}
 		}
 	}
 
@@ -273,30 +297,6 @@ $ui-class-play-disabled: ".vac-disable-play";
 				font-size: 10px;
 				&:hover{
 					color: $red;
-				}
-			}
-		}
-		// Wrapper for controls to go to <prev|next> annotation and to scrub +/- 1 sec
-		.vac-annotation-nav, .vac-video-move{
-			margin-top: 8px;
-			width: 100%;
-			display:flex;
-			flex-direction: row;
-			div{
-				flex: 1;
-				background-color: rgba($black,.8);
-				text-align: center;
-				line-height: 22px;
-				color: $secondaryColor;
-				transition: all .2s ease-in-out;
-				cursor: pointer;
-				font-size: 12px;
-				&:hover{
-					background-color: $secondaryColor;
-					color: $black;
-				}
-				&.vac-a-prev{
-					margin-right: 1px;
 				}
 			}
 		}

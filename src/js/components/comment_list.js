@@ -7,6 +7,7 @@ const Utils = require('./../lib/utils');
 const Comment = require('./comment');
 
 const commentListTemplateName = 'comment_list';
+const commentListReviewTemplateName = 'comment_list_review';
 const newCommentTemplateName = 'new_comment';
 
 module.exports = class CommentList extends PlayerUIComponent {
@@ -14,7 +15,7 @@ module.exports = class CommentList extends PlayerUIComponent {
     super(player);
 
     this.annotation = data.annotation;
-    this.comments = data.comments.map(commentData => {
+    this.comments = data.comments.map((commentData) => {
       commentData.commentList = this;
       return new Comment(commentData, player);
     });
@@ -23,7 +24,7 @@ module.exports = class CommentList extends PlayerUIComponent {
 
   // Serialize object
   get data() {
-    return this.comments.map(c => c.data);
+    return this.comments.map((c) => c.data);
   }
 
   // Bind all events needed for the comment list
@@ -61,12 +62,17 @@ module.exports = class CommentList extends PlayerUIComponent {
 
   // Render CommentList UI with all comments using template
   render() {
-    this.$el = $(
-      this.renderTemplate(commentListTemplateName, {
-        commentsHTML: this.comments.map(c => c.HTML),
-        rangeStr: Utils.humanTime(this.annotation.range)
-      })
-    );
+    var templateData = {
+      commentsHTML: this.comments.map((c) => c.HTML),
+      rangeStr: Utils.humanTime(this.annotation.range),
+      emoji: this.annotation.emoji
+    };
+
+    if (this.plugin.annotationState.reviewMode) {
+      this.$el = $(this.renderTemplate(commentListReviewTemplateName), templateData);
+    } else {
+      this.$el = $(this.renderTemplate(commentListTemplateName, templateData));
+    }
 
     this.$player.append(this.$el);
     this.$wrap = this.$UI.commentsContainer;
@@ -81,10 +87,7 @@ module.exports = class CommentList extends PlayerUIComponent {
 
   // Render new comment form
   addNewComment() {
-    this.$wrap
-      .addClass(this.UI_CLASSES.active)
-      .find('.vac-comments-wrap')
-      .scrollTop(999999);
+    this.$wrap.addClass(this.UI_CLASSES.active).find('.vac-comments-wrap').scrollTop(999999);
     const $shapebox = this.$wrap.find('.vac-add-new-shapebox');
     const width = $shapebox.outerWidth();
     const top = $shapebox.position().top + 10;
@@ -135,7 +138,7 @@ module.exports = class CommentList extends PlayerUIComponent {
       this.annotation.teardown();
     } else {
       const commentId = this.findCommentId(event);
-      const comment = this.comments.find(c => c.id == commentId);
+      const comment = this.comments.find((c) => c.id == commentId);
       const i = this.comments.indexOf(comment);
       this.comments.splice(i, 1);
       this.reRender();
@@ -147,9 +150,7 @@ module.exports = class CommentList extends PlayerUIComponent {
   findCommentId(event) {
     const id =
       typeof event.detail.id === 'undefined'
-        ? $(event.target)
-            .closest('.vac-comment')
-            .data('id')
+        ? $(event.target).closest('.vac-comment').data('id')
         : event.detail.id;
     return id;
   }
@@ -190,9 +191,7 @@ module.exports = class CommentList extends PlayerUIComponent {
 
   // Delete the annotation
   handleDeleteAnnotationClick(e) {
-    const $confirmEl = $('<a/>')
-      .addClass('vac-delete-confirm')
-      .text('CONFIRM');
+    const $confirmEl = $('<a/>').addClass('vac-delete-confirm').text('CONFIRM');
     $confirmEl.on('click.comment', () => {
       $confirmEl.off('click.comment');
       this.annotation.teardown();
@@ -210,7 +209,7 @@ module.exports = class CommentList extends PlayerUIComponent {
     if (this.$el) {
       this.$el.off('click.vac-comment mousewheel.vac-comment DOMMouseScroll.vac-comment');
     }
-    this.comments.forEach(c => c.teardown(destroyComments));
+    this.comments.forEach((c) => c.teardown(destroyComments));
     if (destroyComments) this.comments = [];
     super.teardown();
   }

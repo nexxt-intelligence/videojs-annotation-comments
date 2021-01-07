@@ -1,0 +1,26 @@
+<div class="vac-comments-container">
+    <div class="vac-emoji-filter-container">
+        <div class="vac-emoji-block" name="like">
+            <img class="vac-emoji-img" src='https://nexxt-inca-storage.s3.us-east-2.amazonaws.com/img/emojis/video-like.png' />
+        </div>
+        <div class="vac-emoji-block" name="dislike">
+            <img class="vac-emoji-img" src='https://nexxt-inca-storage.s3.us-east-2.amazonaws.com/img/emojis/video-dislike.png' />
+        </div>
+        <div class="vac-emoji-block" name="confused">
+            <img class="vac-emoji-img" src='https://nexxt-inca-storage.s3.us-east-2.amazonaws.com/img/emojis/video-confused.png' />
+        </div>
+    </div>
+<div class="vac-comments-wrap">
+    {{#each commentsHTML as |comment|}}
+    {{{comment}}}
+    {{/each}}
+    <div class="vac-reply-btn vac-button">ADD REPLY</div>
+    <div class="vac-add-new-shapebox"></div>
+  </div>
+  <div class="vac-comments-control-bar">
+    <div class="vac-range"><b>@</b> {{rangeStr}}</div>
+    <div class="vac-control-buttons">
+      <a class="vac-delete-annotation">DELETE</a> | <a class="vac-close-comment-list">CLOSE</a>
+    </div>
+  </div>
+</div>

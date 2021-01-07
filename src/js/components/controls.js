@@ -9,6 +9,7 @@ const DraggableMarker = require('./draggable_marker.js');
 const SelectableShape = require('./selectable_shape.js');
 const PlayerButton = require('./player_button');
 const Annotation = require('./annotation');
+const { times } = require('underscore');
 
 const templateName = 'controls';
 
@@ -23,7 +24,6 @@ module.exports = class Controls extends PlayerUIComponent {
   constructor(player, bindArrowKeys) {
     super(player);
     this.initAPI(this, 'Controls');
-
     this.internalCommenting = this.plugin.options.internalCommenting;
     this.showControls = this.plugin.options.showControls;
     this.uiState = Utils.cloneObject(BASE_UI_STATE);
@@ -47,12 +47,15 @@ module.exports = class Controls extends PlayerUIComponent {
       .on('click.vac-controls', '.vac-annotation-nav .vac-a-prev', () =>
         this.plugin.annotationState.prevAnnotation()
       ) // Click 'prev' on annotation nav
-      .on('click.vac-controls', '.vac-video-move .vac-a-next', () => this.marker.scrubStart(1)) // Click '+1 sec' on marker nav
-      .on('click.vac-controls', '.vac-video-move .vac-a-prev', () => this.marker.scrubStart(-1)); // Click '-1 sec' on marker nav
+      .on('click.vac-control', '.vac-video-move .vac-a-next', () => this.marker.scrubStart(1)) // Click '+1 sec' on marker nav
+      .on('click.vac-control', '.vac-video-move .vac-a-prev', () => this.marker.scrubStart(-1)); // Click '-1 sec' on marker nav
 
     if (this.internalCommenting) {
       this.$player
         .on('click.vac-controls', '.vac-add-controls button', this.writeComment.bind(this)) // 'Next' button click while adding
+        .on('click.vac-control', '.vac-emoji-container .vac-emoji-block', (e) =>
+          this.selectEmoji(e)
+        )
         .on(
           'click.vac-controls',
           '.vac-video-write-new.vac-is-annotation button',
@@ -65,7 +68,7 @@ module.exports = class Controls extends PlayerUIComponent {
         ); // Cancel link click
     }
     if (bindArrowKeys) {
-      $(document).on(`keyup.vac-nav-${this.playerId}`, e => this.handleArrowKeys(e)); // Use arrow keys to navigate annotations
+      $(document).on(`keyup.vac-nav-${this.playerId}`, (e) => this.handleArrowKeys(e)); // Use arrow keys to navigate annotations
     }
   }
 
@@ -119,13 +122,16 @@ module.exports = class Controls extends PlayerUIComponent {
     this.render(true);
     this.marker.teardown();
     this.marker = null;
+    this.emoji = null;
   }
 
   // User clicked 'add' button in the controls - setup UI and marker
   startAddNew() {
+    // pause and make sure plugin is ready
     if (!this.plugin.active) this.plugin.toggleAnnotationMode();
-
     this.player.pause();
+
+    // switch to adding UI
     this.setAddingUI();
     this.uiState.adding = true;
     this.render();
@@ -141,7 +147,11 @@ module.exports = class Controls extends PlayerUIComponent {
     // show cursor help text if controls are hidden
     if (!this.showControls) this.bindCursorTooltip();
 
+    // fire signal
     this.plugin.fire('enteredAddingAnnotation', { range });
+
+    // immediately show comment writing prompt (skip the need to click)
+    this.writeComment();
   }
 
   // User clicked 'next' action - show UI to write comment
@@ -150,17 +160,38 @@ module.exports = class Controls extends PlayerUIComponent {
     this.render();
   }
 
+  selectEmoji(e) {
+    const element = e.target;
+    const $emoji_block = $(element).parent();
+    const emoji = $emoji_block.attr('name');
+
+    if (this.emoji && this.emoji == emoji) {
+      this.emoji = null;
+      $('.vac-emoji-block').removeClass('vac-emoji-selected').removeClass('vac-emoji-unselected');
+    } else {
+      // apply styles
+      $('.vac-emoji-block').removeClass('vac-emoji-selected').addClass('vac-emoji-unselected');
+      $emoji_block.addClass('vac-emoji-selected').removeClass('vac-emoji-unselected');
+      this.emoji = emoji;
+    }
+  }
+
   // User clicked to save a new annotation/comment during add new flow
   saveNew() {
     const comment = this.$UI.newCommentTextarea.val();
-    if (!comment) return; // empty comment - TODO add validation / err message
+    const commentBox = document.getElementsByClassName('vac-comment-error')[0];
+    commentBox.innerHTML = '';
+    if (!comment) {
+      commentBox.innerHTML += 'Please add text in the comment box';
+      return; // empty comment - TODO add validation / err message
+    }
 
-    const a = Annotation.newFromData(
-      this.marker.range,
-      this.selectableShape.shape,
-      comment,
-      this.plugin
-    );
+    if (!this.emoji) {
+      commentBox.innerHTML += 'Please select emoji';
+      return;
+    }
+
+    const a = Annotation.newFromData(this.marker.range, this.emoji, comment, this.plugin);
     this.plugin.annotationState.addNewAnnotation(a);
 
     this.cancelAddNew();
@@ -200,7 +231,7 @@ module.exports = class Controls extends PlayerUIComponent {
     this.plugin.setBounds(false);
     $(document).on(
       `mousemove.vac-tooltip-${this.playerId}`,
-      Utils.throttle(event => {
+      Utils.throttle((event) => {
         if (!this.plugin.bounds) return;
 
         const x = event.pageX;
