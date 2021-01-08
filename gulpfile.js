@@ -92,7 +92,7 @@ gulp.task('sass', () => {
     .pipe(sass().on('error', sass.logError))
     .pipe(
       autoprefixer({
-        browsers: ['defaults', 'not ie <= 9'],
+        overrideBrowserslist: ['defaults', 'not ie <= 9'],
         cascade: false
       })
     )
@@ -111,7 +111,7 @@ gulp.task('transpile:watch', () => {
 });
 
 gulp.task('templates', () => {
-  gulp
+  return gulp
     .src('./src/templates/**/*.hbs')
     .pipe(
       handlebars({
@@ -152,7 +152,7 @@ gulp.task('build', gulp.series(['templates', 'sass', 'transpile'], (cb) => {
     gulp.dest('./docs/build')
   ]);
 
-  pump(
+  return pump(
     [
       gulp.src('build/videojs-annotation-comments.cjs.js'),
       rename(CJSFILENAME.replace('.js', '.min.js')),
